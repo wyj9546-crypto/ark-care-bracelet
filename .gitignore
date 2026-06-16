@@ -1,0 +1,12 @@
+node_modules/
+.expo/
+dist/
+dist-check/
+build/
+release/
+desktop-app/release/
+desktop-app/web/assets/
+apps/mobile-app/AppData/
+*.log
+.DS_Store
+.edge-profile-check/

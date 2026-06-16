@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Ark 方舟 | 3D 智能守护手环</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="intro" aria-label="产品信息">
+        <p class="eyebrow">Smart Guardian Band Prototype</p>
+        <h1>The Ark 方舟</h1>
+        <p class="summary">
+          透明上盖、柔性腕带、ESP32-C3 主控与传感器模组的可旋转 3D 演示模型。
+        </p>
+        <div class="status-strip" aria-label="当前状态">
+          <span class="status-dot" data-status-dot></span>
+          <span data-status-label>正常守护 · 冷色呼吸</span>
+        </div>
+      </section>
+
+      <section class="stage" aria-label="3D 手环模型">
+        <div id="watch-canvas" class="canvas-wrap"></div>
+        <div class="hint">拖动旋转 · 滚轮缩放 · 双击复位</div>
+      </section>
+
+      <aside class="controls" aria-label="模型控制">
+        <div class="panel">
+          <h2>状态光</h2>
+          <div class="button-row">
+            <button class="control-button is-active" data-mode="normal">正常</button>
+            <button class="control-button" data-mode="warning">关注</button>
+            <button class="control-button" data-mode="rest">放松</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>结构标注</h2>
+          <ul class="spec-list">
+            <li><span>透明上盖</span><b>半透舱体</b></li>
+            <li><span>主控板</span><b>ESP32-C3</b></li>
+            <li><span>麦克风</span><b>顶部圆形孔位</b></li>
+            <li><span>传感器</span><b>底部触点区</b></li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h2>接入方式</h2>
+          <p>
+            后续可把状态按钮换成树莓派后端数据：正常亮冷色，监测到压力/异常事件亮暖色。
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./node_modules/three/build/three.module.js",
+          "three/addons/": "./node_modules/three/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
