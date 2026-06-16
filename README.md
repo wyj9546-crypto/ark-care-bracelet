@@ -1,55 +1,72 @@
-# 方舟 Care Bracelet
+# 情绪异常识别引擎
 
-方舟是一套面向长者与独居人群的智能守护手环概念原型，包含移动端交互、桌面演示、3D 外观展示，以及一套用于 PPT 展示的情绪异常识别引擎代码。
+这是一个按照 PPT 技术路线整理的 TypeScript 算法示例，重点展示“从信号采集到异常判定，再到长期个体化优化”的完整算法闭环。
 
-## 技术路线
+项目只包含情绪异常识别相关代码，不包含手环 3D 展示、移动端 App 原型或 AI 对话演示页。
 
-情绪异常识别引擎由四个互相校验的机制组成：
+## 算法闭环
 
-- 时间窗口与三重防御：把连续生理与行为信号拆成短周期、30 分钟窗口和 7 天趋势，避免单点噪声直接触发。
-- 多维度安全判断：融合 HRV、R-R 间期、睡眠阶段、行为节律与非语义声学线索。
-- 个体化基线：以最近 7 天稳定数据为参照，降低不同用户之间的生理差异影响。
-- 持续学习迭代：只在低噪声、低运动、佩戴稳定的数据上更新基线。
+核心判断原则：
 
-核心原则：只有多个时间尺度与多模态信号协同异常时，系统才输出高置信度干预触发；后续仍由用户确认是否联系可信联系人。
+> 只有多时间尺度与多模态信号协同异常时，系统才输出高置信度干预触发；随后通过个体化反馈持续降低误报。
 
-## 目录
+对应四个机制：
+
+1. 时间窗口与状态机  
+   短期、中期、长期窗口依次递进；只有跨尺度协同异常，才进入高置信触发。
+
+2. 多维度全面判断  
+   融合 HRV、R-R 间期稳定性、触控/佩戴节律、睡眠阶段、行为节律与非语义声学线索。
+
+3. 弹性阈值参考  
+   以过去 7 天个体动态数据为基线，实时计算偏离度，并随长期状态漂移校正。
+
+4. 自我进化与迭代  
+   干预后的状态变化作为隐式反馈，设备端增量学习，让分类边界向个体特征收敛。
+
+## 目录结构
 
 ```text
-apps/mobile-app/                 Expo 移动端原型
-apps/mobile-app/src/engine/       情绪异常识别引擎
-recording-demo/                   PPT/录屏用交互演示页
-watch-3d/                         手环 3D 展示
-desktop-app/                      Windows 桌面包装演示
+src/
+  types.ts              输入/输出数据结构
+  signalProcessing.ts   窗口、均值、标准差、z-score 等基础信号处理
+  baseline.ts           个体基线更新
+  stateMachine.ts       三重防御状态机与多模态信号评分
+  emotionEngine.ts      总决策入口
+  demoScenario.ts       PPT 展示用模拟输入
+  index.ts              对外导出
 ```
 
-## 算法入口
+## 使用示例
 
 ```ts
-import { evaluateEmotionRisk, demoEngineInput } from './src/engine';
+import { demoEngineInput, evaluateEmotionRisk } from './src';
 
 const decision = evaluateEmotionRisk(demoEngineInput);
 
 console.log(decision.riskLevel);
 console.log(decision.confidence);
 console.log(decision.triggerIntervention);
+console.log(decision.signals);
 ```
 
-返回结果包含：
+## 返回结果
+
+`evaluateEmotionRisk` 会返回：
 
 - `riskLevel`: `normal`、`watch` 或 `intervene`
 - `confidence`: `low`、`medium` 或 `high`
-- `triggerIntervention`: 是否进入干预触发
-- `signals`: 四类防御信号及其异常原因
-- `updatedBaseline`: 迭代后的个体基线
+- `triggerIntervention`: 是否输出干预触发
+- `signals`: 四类算法机制对应的异常信号
+- `summary`: 面向产品层的判断摘要
+- `suggestedAction`: 建议动作
+- `updatedBaseline`: 更新后的个体化基线
 
-## 本地运行
+## 验证
 
 ```bash
-cd apps/mobile-app
 npm install
 npm run typecheck
-npm run web
 ```
 
-本项目当前主要用于比赛展示和 PPT 说明，不用于医学诊断或紧急救援判断。
+说明：本项目用于比赛/PPT 展示，不构成医学诊断、心理诊断或紧急救援系统。

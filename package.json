@@ -1,0 +1,14 @@
+{
+  "name": "emotion-anomaly-engine",
+  "version": "0.1.0",
+  "description": "Presentation-grade emotion anomaly recognition engine based on multi-scale and multi-modal signals.",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "license": "MIT"
+}
